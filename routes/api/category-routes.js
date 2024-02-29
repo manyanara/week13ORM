@@ -17,18 +17,18 @@ router.get('/', async (req, res) =>
   
 
 // get request by specific category id
-router.get('/:id', async (req, res) =>  {
+router.get('/:id', async (req, res) => {
   try {
     const categoryData = await Category.findByPk(req.params.id, {
-      include: [{model: Product}]
+      include: [{ model: Product }]
     });
-    if (!categoryData){
-      res.status(404).json({ message: 'No location found with this id!' });
-      return
+    if (!categoryData) {
+      res.status(404).json({ message: 'No category found with this id!' });
+      return;
     }
-    res.status(200).json(locationData);
+    res.status(200).json(categoryData); 
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 // post request to create new category
@@ -53,8 +53,8 @@ router.put('/:id', (req, res) => {
       id: req.params.id,
     },
   })
-  .then((updatedBook)=>{
-    res.json(updatedBook);
+  .then((updatedCategory)=>{
+    res.json(updatedCategory);
   })
   .catch((err)=>{
     res.json(err);
@@ -67,8 +67,8 @@ router.delete('/:id', (req, res) => {
       id: req.params.id,
     },
   })
-  .then((deletedBook)=>{
-    res.json(deletedBook);
+  .then((deletedCategory)=>{
+    res.json(deletedCategory);
   })
   .catch((err)=>{
     res.json(err)
